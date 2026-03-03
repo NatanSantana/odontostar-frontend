@@ -4,15 +4,15 @@
 
     <div class="DetalhesPaciente">
         <h2>Detalhes do Paciente</h2>
-        <p>Nome: João Silva</p>
-        <p>Idade: 30 anos</p>
-        <p>CPF: 123.456.789-00</p>
-        <p>Telefone: (11) 98765-4321</p>
-        <p>Email: </p>
-        <p>Bairro: Centro</p>
-        <p>Cidade: São Paulo</p>
+        <p>Nome: {{ nome }}</p>
+        <p>Idade: {{ anos }}</p>
+        <p>CPF: {{ cpf }}</p>
+        <p>Telefone: {{ telefone }}</p>
+        <p>Email: {{ email }}</p>
+        <p>Bairro: {{bairro}}</p>
+        <p>Cidade: {{ cidade }}</p>
 
-        <input type="text" placeholder="Digite seu CPF para Carregar seus Dados" id="inputCPF">
+        <input v-model="cpfInserir" type="text" placeholder="Digite seu CPF para Carregar seus Dados" id="inputCPF">
     </div>
 
 
@@ -26,38 +26,30 @@
 
 
     <div class="formDetalhes">
-        <label for="procedimentos">Detalhes Da Consulta:</label>
-        <select name="procedimentos" id="procedimentosDisponiveis">
+        <label id="procedimento">Selecione um Procedimento:</label>
+        <select v-model="especialidade" name="procedimentos" id="procedimentosDisponiveis">
             <option value="Tratamento de Canal">Tratamento de Canal</option>
             <option value="Extração de Dente">Extração de Dente</option>
             <option value="Limpeza Dental">Limpeza Dental</option>
             <option value="Implante Dentário">Implante Dentário</option>
         </select>
+    
+        <span id="spanSemDataHora" v-if="semDataHora === true" style="color: red;">Não há Datas para esse tipo de procedimento</span>
 
-        <select name="datas" id="datasDisponiveis">
-            <option value="27/08/2026">27/08/2026</option>
-            <option value="28/08/2026">28/08/2026</option>
-            <option value="29/08/2026">29/08/2026</option>
-            <option value="30/08/2026">30/08/2026</option>
+        <label v-if="semDataHora === false" id="labeldata">Escolha uma Data:</label>
+        <select v-if="semDataHora === false" v-model="dataEscolhida" name="datas" id="datasDisponiveis">
+            <option v-for="item in datas" :key="item._id" :value="item.data">{{ format(new Date(item.data), "dd/MM/yyyy") }}</option>   
         </select>
         
-        <select name="horarios" id="horariosDisponiveis">
-            <option value="08:00">08:00</option>
-            <option value="09:00">09:00</option>
-            <option value="10:00">10:00</option>
-            <option value="11:00">11:00</option>
+        <label v-if="semDataHora === false" >Selecione um horário:</label>
+        <select v-if="semDataHora === false" name="horarios" id="horariosDisponiveis">
+            <option v-for="h in hora" :key="h" :value="h">{{ h }}</option>
         </select>
 
 
-        <select name="dentistas" id="dentistasDisponiveis">
-            <option value="Dr. Silva">Dr. Silva</option>
-            <option value="Dra. Oliveira">Dra. Oliveira</option>
-            <option value="Dr. Santos">Dr. Santos</option>
-            <option value="Dra. Costa">Dra. Costa</option>
-        </select>
-        <button type="submit" id="buttonAgendar">Agendar Consulta</button>
 
-
+        
+        <button v-if="semDataHora === false" type="submit" id="buttonAgendar">Agendar Consulta</button>
     </div>
 
 
@@ -104,16 +96,33 @@
     flex-direction: column;
     margin-left: 65%;
     margin-top: -10%;
-    gap: 15px;
+    gap: 20px;
 
 }
 
-.formDetalhes label {
-    font-size: 24px;
+.formDetalhes #spanSemDataHora {
+    margin-left: 8%;
+    width: 200px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     font-weight: bold;
-    width: 300px;
+}
+
+
+.formDetalhes label {
+    font-size: 14px;
+    font-weight: bold;
+    width: 200px;
+    margin-left: 120px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     color: white;
+}
+
+.formDetalhes #procedimento {
+    margin-left: 100px;
+}
+
+.formDetalhes #labeldata {
+    margin-left: 132px;
 }
 
 .formDetalhes select {
@@ -145,10 +154,66 @@
 
 </style>
 
-<script>
+<script setup>
+import { ref, watch } from 'vue'
+import { format } from 'date-fns'
 
-export default {
-  name: 'PaginaAgendamento'
-}
+const semDataHora = ref(true)
+const especialidade = ref('');
+const datas = ref('');
+const hora = ref(['']);
+const dataEscolhida = ref('');
+const cpfInserir = ref('');
+const nome = ref('');
+const anos = ref('');
+const cpf = ref('');
+const telefone = ref('');
+const email = ref('');
+const bairro = ref('');
+const cidade = ref('');
+
+
+
+watch(cpfInserir, async (cpfDigitado) => {
+    if (cpfInserir.value.length === 11 && !isNaN(cpfInserir.value)) {
+        const response = await fetch(`http://localhost:3080/api/findBy?cpf=${cpfDigitado}`)
+
+        const data = await response.json();
+        nome.value = data.nomeCompleto
+        anos.value = data.idade
+        cpf.value = data.cpf
+        telefone.value = data.telefone
+        email.value = data.email
+        bairro.value = data.bairro
+        cidade.value = data.cidade
+    }
+
+
+}) 
+
+watch(especialidade, async (especialidadeDesejada) => {
+  const response = await fetch(`http://localhost:3080/api/mostrar-datas?especialidade=${especialidadeDesejada}`)
+
+  hora.value = [];
+
+  if (!response.ok) {
+    semDataHora.value = true
+    return;
+  }
+
+  const data = await response.json()
+  semDataHora.value = false
+  datas.value = data.request
+})
+
+watch(dataEscolhida, (novaData) => {
+  hora.value = []
+
+  for (const item of datas.value) {
+    if (novaData === item.data) { 
+      hora.value.push(item.horario)
+    }
+  }
+})
 
 </script>

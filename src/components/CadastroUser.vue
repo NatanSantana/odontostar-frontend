@@ -168,6 +168,12 @@ body {
 </style>
 
 <script>
+
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+
 export default {
   name: 'CadastroUser',
   data () {
@@ -193,22 +199,22 @@ export default {
 
   watch: {
   async cep(cep) {
-      if (cep.length === 8 && !isNaN(cep)) {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const endereco = await response.json();
-        if (endereco.erro) {
-          this.camposMessage = 'CEP não encontrado!'
-          this.verificacao = true
-        } else {
-          this.bairro = endereco.bairro;
-          this.cidade = endereco.localidade;
-          this.logradouro = endereco.logradouro;
-        }
-      }
-      
+  if (cep.length === 8 && !isNaN(cep)) {
+    const response = await fetch(`https://brasilapi.com.br/api/cep/v1/${cep}`);
+    
+    if (!response.ok) {
+      this.camposMessage = 'CEP não encontrado!';
+      this.verificacao = true;
+      return;
     }
-          
-  },
+
+    const endereco = await response.json();
+    this.bairro = endereco.neighborhood;
+    this.cidade = endereco.city;
+    this.logradouro = endereco.street;
+    }
+  }
+},
 
   methods: {
     async enviar() {
@@ -216,8 +222,7 @@ export default {
       const response = await fetch('http://localhost:3080/api/register-user', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
               nomeCompleto: this.nomeCompleto,
@@ -235,8 +240,17 @@ export default {
 
       });
       const data = await response.json();
-      console.log(data);
+
+      if (!response.ok) {
+        this.camposMessage = data.message
+        this.verificacao = true;
+        this.criado = false;
+        return;
+      }
+
       this.criado = true;
+      router.push('/')
+
     } catch (error) {
       console.error('Erro ao enviar os dados:', error);
     }
