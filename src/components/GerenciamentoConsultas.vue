@@ -1,0 +1,247 @@
+<template>
+<h1>Controle de Consultas</h1>
+
+    <div class="ConsultasMarcadas">
+      <span v-if="existeConsultas" style="color: whitesmoke; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-weight: bold; ">Não há consultas</span>
+    <table>
+    <thead>
+      <tr>
+        <th>Paciente</th>
+        <th>CPF</th>
+        <th>Procedimento</th>
+        <th>Data</th>
+        <th>Hora</th>
+      </tr>
+    </thead>
+   <tbody>
+  <tr v-for="consulta in consultasPaginadas" :key="consulta._id">
+    <td>{{ consulta.nomePaciente }}</td>
+    <td>{{ consulta.cpf }}</td>
+    <td>{{ consulta.procedimento }}</td>
+    <td v-if="consulta.data">{{ format(parseISO(consulta.data), 'dd/MM/yyyy') }}</td>
+    <td v-else>-</td>
+    <td>{{ consulta.hora }}</td>
+  </tr>
+</tbody>
+  </table>
+
+  <div class="paginacao">
+    <button @click="paginaAtual--" :disabled="paginaAtual === 1">←</button>
+    <span style="color: white;">{{ paginaAtual }} / {{ totalPaginas }}</span>
+    <button @click="paginaAtual++" :disabled="paginaAtual === totalPaginas">→</button>
+  </div>
+
+</div>
+
+<div class="funcoes">
+
+  <div id="consultaRealizada">
+    <h2>Funções</h2>
+    <form>
+    <select v-model="operacaoEscolhida">
+      <option value="Marcar como Realizada">Marcar como Realizada</option>
+      <option value="Cancelar Consulta">Cancelar Consulta</option>
+    </select>
+      <input v-model="cpfPaciente" placeholder="CPF">
+      <input v-model="diaConsulta" placeholder="DATA">
+      <input v-model="hora" placeholder="HORA">
+
+      <button type="button" @click="verificar()">Confirmar</button>
+      <span style="color: red; font-size: 20px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-weight: bold;">{{ mensagemAoEnviar }}</span>
+    </form>
+      
+  </div>
+
+
+</div>
+</template>
+
+
+<style>
+
+.paginacao {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-left: 5%;
+}
+
+.paginacao button {
+  background-color: rgb(0, 6, 85);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.paginacao button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.funcoes {
+  position: absolute;
+  top: 150px;
+  left: 55%;
+}
+
+.funcoes #consultaRealizada {
+  display: flex;
+  flex-direction: column;
+  background: darkblue;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  gap: 10px;
+  max-width: 570px;
+  max-height: 910px;
+  width: 600px;
+  height: 910px;
+  padding: 20px;
+  border-radius: 10px;
+  margin-left: 40%;
+  margin-top: -25%;
+}
+
+.funcoes #consultaRealizada select {
+  width: 180px;
+  height: 50px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: thin;
+  margin-left: 3px;
+}
+
+.funcoes #consultaRealizada form {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  gap: 10px;
+  margin-top: 40%;
+}
+
+.funcoes #consultaRealizada button {
+  background-color: whitesmoke;
+  width: 130px;
+  border-radius: 5px;
+  border: thin;
+  font-weight: bold;
+  height: 30px;
+  background-color: rgb(0, 6, 85);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  color: whitesmoke;
+  margin-left: 3%;
+}
+
+.funcoes #consultaRealizada h2 {
+  color: whitesmoke;
+  font-size: 50px;
+  margin-top: 20%;
+}
+
+.funcoes #consultaRealizada input {
+  width: 350px;
+  height: 50px;
+  font-size: 17px;  
+  border-radius: 7px;
+}
+
+.ConsultasMarcadas {
+    width: 30%;
+    border-radius: 10px;
+    margin-left: 5%;
+    margin-top: 4%;
+}
+
+.ConsultasMarcadas table {
+  width: 570px;
+  border-collapse: collapse;
+  color: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+th {
+  background-color: rgb(0, 6, 85);
+}
+
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+</style>
+
+
+<script setup> 
+import { ref, onMounted, computed } from 'vue';
+import { format, parseISO} from 'date-fns';
+
+const consultasPendentes = ref([]);
+const diaConsulta = ref('')
+const cpfPaciente = ref('')
+const hora = ref('')
+const operacaoEscolhida = ref('')
+const mensagemAoEnviar = ref('')
+const existeConsultas = ref(false)
+const paginaAtual = ref(1);
+const itensPorPagina = 5;
+
+const consultasPaginadas = computed(() => {
+  const inicio = (paginaAtual.value - 1) * itensPorPagina;
+  const fim = inicio + itensPorPagina;
+  return consultasPendentes.value.slice(inicio, fim);
+});
+
+const totalPaginas = computed(() => {
+  return Math.ceil(consultasPendentes.value.length / itensPorPagina);
+});
+
+async function consultas() {
+  const response = await fetch('http://localhost:3080/api/buscar-consultaspendentes')
+  const data = await response.json();
+  if (data.error === "Não há consultas") {
+    existeConsultas.value = true;
+    return
+  }
+  consultasPendentes.value = data
+}
+
+async function enviar() {
+  if (operacaoEscolhida.value === "Marcar como Realizada") {
+    const response = await fetch('http://localhost:3080/api/marcar-realizada', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        cpfPaciente: cpfPaciente.value,
+        diaConsulta: diaConsulta.value,
+        hora: hora.value
+      })  
+    })
+    const data = await response.json();
+    if (!response.ok) {
+      mensagemAoEnviar.value = data.message
+      return
+    }
+    window.location.reload();
+  }
+}
+
+function verificar() {
+  if (cpfPaciente.value === '' || diaConsulta.value === '' || hora.value === '' || operacaoEscolhida.value === '') {
+    mensagemAoEnviar.value = "Preencha Todos os Campos"
+  } else {
+    enviar()
+  }
+}
+
+onMounted(() => {
+  consultas();
+});
+</script>

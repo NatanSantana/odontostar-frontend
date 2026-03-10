@@ -72,13 +72,11 @@ body {
   font-size: 22px;
   color: rgba(255, 0, 0, 0.842);
   font-weight: bold;
-
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
- 
 }
 
 .camposNulls-enter-active,
-  .camposNulls-leave-active {
+.camposNulls-leave-active {
   transition: opacity 0.5s ease-in;
 }
 
@@ -93,10 +91,8 @@ body {
   width: 400px;
   font-size: 22px;
   color: white;
-  background-color: rgb(0, 6, 85);
   background: rgb(0, 6, 85);
   border-radius: 10px;
-
 }
 
 .confirmacao p {
@@ -106,7 +102,7 @@ body {
 }
 
 .fade-enter-active,
-  .fade-leave-active {
+.fade-leave-active {
   transition: opacity 0.5s ease-in;
 }
 
@@ -118,19 +114,20 @@ body {
 #TituloCadastro {
   color: white;
   background: linear-gradient(90deg, rgb(0, 6, 85), rgb(60, 80, 200));
-  width: 800px;
+  width: 90%;
+  max-width: 800px;
   height: 50px;
   padding-top: 10px;
   border-radius: 5px;
   letter-spacing: 5px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-  
+  text-align: center;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  margin-right: 1600px;
+  padding: 20px;
 }
 
 .form button {
@@ -143,8 +140,7 @@ body {
   background-color: rgb(0, 6, 85);
   font-weight: bold;
   font-size: 15px;
-  border: 1px solid #ccc;
-  border-color: black;
+  border: 1px solid black;
 }
 
 .inputs {
@@ -161,10 +157,86 @@ body {
   margin-top: 10px;
   margin-left: 20px;
   border: 0px solid #000000;
-
 }
 
 
+@media (max-width: 768px) {
+  #TituloCadastro {
+    font-size: 18px;
+    letter-spacing: 3px;
+    height: auto;
+    padding: 15px 10px;
+  }
+
+  .inputs input {
+    width: 100%;
+    max-width: 300px;
+    margin-left: 0;
+  }
+
+  .form button {
+    margin-left: 0;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .confirmacao {
+    margin-left: 0;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .confirmacao p {
+    margin-left: 20px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  #TituloCadastro {
+    font-size: 17px;
+    letter-spacing: 2px;
+    padding: 12px 10px;
+    margin-left: 2%;
+  }
+
+  .form {
+    padding: 10px;
+  }
+
+  .inputs input {
+    width: 100%;
+    max-width: 280px;
+    font-size: 16px; 
+  }
+
+  .form button {
+    width: 100%;
+    max-width: 280px;
+    height: 40px;
+    font-size: 16px;
+    margin-left: 0;
+  }
+
+  #camposNull {
+    font-size: 16px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .confirmacao {
+    margin-left: 0;
+    margin-top: 20px;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .confirmacao p {
+    margin-left: 10px;
+    width: 100%;
+  }
+}
 </style>
 
 <script>
@@ -235,7 +307,8 @@ export default {
               cep: this.cep,
               cidade: this.cidade,
               bairro: this.bairro,
-              logradouro: this.logradouro
+              logradouro: this.logradouro,
+              role: 'user'
       })
 
       });

@@ -29,19 +29,21 @@
 
 #spanAcessos {
   margin-top: 10px;
+  text-align: center;
 }
 
 #TituloLogin {
   color: white;
   background: linear-gradient(90deg, rgb(0, 6, 85), rgb(60, 80, 200));
-  width: 800px;
+  width: 90%;
+  max-width: 800px;
   height: 50px;
   margin: 0 auto;
   padding-top: 10px;
   border-radius: 5px;
   letter-spacing: 5px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-  
+  text-align: center;
 }
 
 .login {
@@ -50,7 +52,7 @@
   align-items: center;
   margin-top: 50px;
   gap: 15px;
-  
+  padding: 0 20px;
 }
 
 .login button {
@@ -72,17 +74,64 @@
   border-radius: 10px;
   width: 300px;
   border: 0px solid #000000;
-  
 }
 
 .login label {
   font-size: 20px;
   font-weight: bold;
   color: #fdfdfd;
-
-  
 }
 
+
+@media (max-width: 768px) {
+  #TituloLogin {
+    font-size: 18px;
+    letter-spacing: 3px;
+    height: auto;
+    padding: 15px 10px;
+  }
+
+  .login input {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .login button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  #TituloLogin {
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 12px 10px;
+  }
+
+  .login {
+    margin-top: 30px;
+    gap: 10px;
+  }
+
+  .login input {
+    width: 100%;
+    max-width: 280px;
+    font-size: 16px; 
+  }
+
+  .login label {
+    font-size: 16px;
+  }
+
+  .login button {
+    width: 100%;
+    max-width: 280px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
 
 </style>
 
@@ -122,6 +171,7 @@ async function login() {
 
   const data = await response.json()
   localStorage.setItem('token', data.token)
+  localStorage.setItem('role', data.role)
   router.push('/agendamento')
 }
 </script>
