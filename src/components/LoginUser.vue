@@ -140,6 +140,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { jwtDecode } from 'jwt-decode';
 
 const router = useRouter()
 
@@ -171,7 +172,14 @@ async function login() {
 
   const data = await response.json()
   localStorage.setItem('token', data.token)
-  localStorage.setItem('role', data.role)
-  router.push('/agendamento')
+  const token = localStorage.getItem('token')
+  const decoded = jwtDecode(token);
+  
+  if (decoded.role !== 'admin') {
+    router.push('/agendamento')
+  } else if (decoded.role === 'admin') {
+    router.push('/gerenciamento')
+  }
+  
 }
 </script>

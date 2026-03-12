@@ -1,5 +1,5 @@
 <template>
-<h1>Controle de Consultas</h1>
+<h1 id="titulo">Controle de Consultas</h1>
 
     <div class="ConsultasMarcadas">
       <span v-if="existeConsultas" style="color: whitesmoke; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-weight: bold; ">Não há consultas</span>
@@ -59,6 +59,19 @@
 
 <style>
 
+#titulo {
+  color: white;
+  background: linear-gradient(90deg, rgb(0, 6, 85), rgb(60, 80, 200));
+  width: 90%;
+  max-width: 800px;
+  height: 60px;
+  padding-top: 13px;
+  border-radius: 5px;
+  letter-spacing: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
 .paginacao {
   display: flex;
   align-items: center;
@@ -95,10 +108,9 @@
   background: darkblue;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
   gap: 10px;
-  max-width: 570px;
-  max-height: 910px;
+  min-height: 100vh;
   width: 600px;
-  height: 910px;
+  height: 1010px;
   padding: 20px;
   border-radius: 10px;
   margin-left: 40%;
@@ -123,7 +135,6 @@
 }
 
 .funcoes #consultaRealizada button {
-  background-color: whitesmoke;
   width: 130px;
   border-radius: 5px;
   border: thin;
@@ -149,18 +160,18 @@
 }
 
 .ConsultasMarcadas {
-    width: 30%;
-    border-radius: 10px;
-    margin-left: 5%;
-    margin-top: 4%;
+  width: 60%;
+  border-radius: 10px;
+  margin-left: 5%;
+  margin-top: 4%;
 }
 
 .ConsultasMarcadas table {
-  width: 570px;
   border-collapse: collapse;
   color: white;
   border-radius: 10px;
   overflow: hidden;
+  font-size: 18px;
 }
 
 th, td {
@@ -175,6 +186,115 @@ th {
 
 tr:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+@media (max-width: 768px) {
+  #titulo {
+    font-size: 16px;
+    letter-spacing: 3px;
+    height: auto;
+    padding: 15px 10px;
+  }
+
+  .ConsultasMarcadas {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .ConsultasMarcadas table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  .funcoes {
+    position: static;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 30px;
+  }
+
+  .funcoes #consultaRealizada {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  .funcoes #consultaRealizada h2 {
+    font-size: 30px;
+    margin-top: 10px;
+  }
+
+  .funcoes #consultaRealizada form {
+    position: static;
+    margin-top: 20px;
+  }
+
+  .funcoes #consultaRealizada input {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .funcoes #consultaRealizada select {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .funcoes #consultaRealizada button {
+    width: 100%;
+    height: 40px;
+    margin-left: 0;
+  }
+}
+
+
+@media (max-width: 480px) {
+  #titulo {
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 12px 10px;
+  }
+
+  .ConsultasMarcadas table {
+    font-size: 9px;
+  }
+
+  th, td {
+    padding: 6px;
+  }
+
+  .funcoes #consultaRealizada h2 {
+    font-size: 24px;
+  }
+
+  .funcoes #consultaRealizada input {
+    font-size: 16px;
+    height: 40px;
+  }
+
+  .funcoes #consultaRealizada select {
+    font-size: 16px;
+    height: 40px;
+  }
+
+  .funcoes #consultaRealizada button {
+    height: 45px;
+    font-size: 15px;
+  }
+
+  .paginacao button {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+  }
 }
 </style>
 

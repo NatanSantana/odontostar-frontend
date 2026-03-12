@@ -116,8 +116,8 @@ body {
   background: linear-gradient(90deg, rgb(0, 6, 85), rgb(60, 80, 200));
   width: 90%;
   max-width: 800px;
-  height: 50px;
-  padding-top: 10px;
+  height: 60px;
+  padding-top: 13px;
   border-radius: 5px;
   letter-spacing: 5px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
@@ -157,6 +157,7 @@ body {
   margin-top: 10px;
   margin-left: 20px;
   border: 0px solid #000000;
+  height: 45px;
 }
 
 

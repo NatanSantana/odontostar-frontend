@@ -6,6 +6,9 @@
       <div class="headerBotoes">
         <button @click="$router.push('/login')" class="btnLogin">Login</button>
         <button @click="$router.push('/cadastro')" class="btnCadastro">Cadastro</button>
+        <button  v-if="role === 'admin'" @click="$router.push('/gerenciamento')" class="btnGerenciamento">Gerenciamento</button>
+        <button  v-if="token"  @click="$router.push('/perfil')" class="btnPerfil">Perfil</button>
+        
       </div>
     </header>
 
@@ -50,10 +53,19 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'PaginaMain'
+<script setup>
+import { ref} from 'vue';
+import { jwtDecode } from 'jwt-decode';
+
+const token = localStorage.getItem('token');
+const role = ref('')
+
+if (token) {
+  const decoded = jwtDecode(token);
+  role.value = decoded.role
 }
+
+
 </script>
 
 <style>
@@ -70,6 +82,17 @@ export default {
   min-height: 100vh;
 }
 
+.btnPerfil {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
 .header {
   display: flex;
@@ -115,6 +138,18 @@ export default {
 }
 
 .btnCadastro {
+  background: white;
+  color: rgb(0, 6, 85);
+  border: 2px solid white;
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btnGerenciamento {
   background: white;
   color: rgb(0, 6, 85);
   border: 2px solid white;
@@ -245,11 +280,13 @@ export default {
 
 @media (max-width: 768px) {
   .header {
-    padding: 15px 20px;
+    padding: 20px 20px;
+    height: 150px;
   }
 
   .headerTitulo {
-    font-size: 20px;
+    font-size: 25px;
+    margin-top: -10px;
   }
 
   .heroTexto h2 {
@@ -279,9 +316,28 @@ export default {
     grid-template-columns: 1fr;
   }
 
-  .btnLogin, .btnCadastro {
+  .btnLogin {
     padding: 8px 15px;
     font-size: 13px;
+  }
+  .btnCadastro {
+    padding: 8px 34px;
+    font-size: 13px;
+  }
+
+  .btnGerenciamento {
+    padding: 8px 15px;
+    font-size: 13px;
+    margin-top: -40px;
+    margin-left: 84px;
+    position: absolute;
+  }
+
+  .btnPerfil {
+    padding: 8px 17px;
+    font-size: 13px;
+    margin-top: -40px;
+    position: absolute;
   }
 }
 </style>

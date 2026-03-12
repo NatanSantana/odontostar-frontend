@@ -69,16 +69,34 @@
 
 <style>
 
+#titulo {
+  color: white;
+  background: linear-gradient(90deg, rgb(0, 6, 85), rgb(60, 80, 200));
+  width: 90%;
+  max-width: 800px;
+  height: 60px;
+  padding-top: 13px;
+  border-radius: 5px;
+  letter-spacing: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
 .weather {
+    display: flex;
+    flex-direction: column;
     width: 400px;
     height: 200px;
-    margin-left: 41%;
+    margin-left: 40%;
     margin-top: -20%;
     color: white;
     position: absolute;
+    gap: 10px;
 }
 
 .DetalhesPaciente {
+    display: flex;
+    flex-direction: column;
     background: linear-gradient(90deg, rgb(0, 6, 85), rgb(60, 80, 200));
     width: 400px;
     height: 300px;
@@ -88,6 +106,7 @@
     border-radius: 5px;
     color: white;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+    gap: 15px;
 }
 
 .inputPaciente {

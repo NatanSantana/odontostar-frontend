@@ -4,13 +4,16 @@ import CadastroUser from '../components/CadastroUser.vue'
 import PaginaMain from '../components/PaginaMain.vue'
 import PaginaAgendamento from '../components/PaginaAgendamento.vue'
 import GerenciamentoConsultas from '@/components/GerenciamentoConsultas.vue'
+import UserProfile from '@/components/UserProfile.vue'
+import { jwtDecode } from 'jwt-decode';
 
 const routes = [
   { path: '/', component: PaginaMain },
   { path: '/login', component: LoginUser },
   { path: '/cadastro', component: CadastroUser },
   { path: '/gerenciamento', component: GerenciamentoConsultas, meta: { requiresAuth: true, requiresAdmin: true } },
-  { path: '/agendamento', component: PaginaAgendamento, meta: { requiresAuth: true} }  
+  { path: '/agendamento', component: PaginaAgendamento, meta: { requiresAuth: true} },
+  {path: '/perfil', component: UserProfile}
 ]
 
 const router = createRouter({
@@ -19,19 +22,27 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('token')
-  const role = localStorage.getItem('role')
-
+  const token = localStorage.getItem('token');
+  const isAuthenticated = !!token;
 
   if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/login') 
-  } else if (to.meta.requiresAdmin && role !== "admin") {
-    next('/')
-  } 
-  
-  else {
-    next() 
+    next('/login');
+    return;
   }
-})
+
+  if (to.meta.requiresAdmin) {
+    if (!token) {
+      next('/');
+      return;
+    }
+    const decoded = jwtDecode(token);
+    if (decoded.role !== 'admin') {
+      next('/');
+      return;
+    }
+  }
+
+  next();
+});
 
 export default router
