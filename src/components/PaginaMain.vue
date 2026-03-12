@@ -8,6 +8,7 @@
         <button @click="$router.push('/cadastro')" class="btnCadastro">Cadastro</button>
         <button  v-if="role === 'admin'" @click="$router.push('/gerenciamento')" class="btnGerenciamento">Gerenciamento</button>
         <button  v-if="token"  @click="$router.push('/perfil')" class="btnPerfil">Perfil</button>
+        <button v-if="token !== null" @click="logout" id="btnLogout">⏻ Sair</button>
         
       </div>
     </header>
@@ -65,10 +66,34 @@ if (token) {
   role.value = decoded.role
 }
 
+function logout() {
+  localStorage.clear();
+  window.location.reload();
+}
 
 </script>
 
 <style>
+
+#btnLogout {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background-color: rgb(0, 6, 85);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+  transition: 0.3s;
+}
+
+#btnLogout:hover {
+  background-color: red;
+}
 
 * {
   margin: 0;

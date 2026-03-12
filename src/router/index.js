@@ -13,7 +13,7 @@ const routes = [
   { path: '/cadastro', component: CadastroUser },
   { path: '/gerenciamento', component: GerenciamentoConsultas, meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/agendamento', component: PaginaAgendamento, meta: { requiresAuth: true} },
-  {path: '/perfil', component: UserProfile}
+  {path: '/perfil', component: UserProfile, meta: {requiresAuth: true}}
 ]
 
 const router = createRouter({

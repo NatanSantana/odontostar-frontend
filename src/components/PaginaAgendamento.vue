@@ -398,7 +398,9 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { format } from 'date-fns'
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const userNull = ref(false);
 const consultaAgendada = ref(false);    
 const enviarNegado = ref(false);
@@ -452,7 +454,7 @@ async function enviar() {
         console.log(data.message)
         consultaAgendada.value = true;
         enviarNegado.value = false;
-        window.location.reload();
+        router.push('/perfil')
         return;
     }
 
