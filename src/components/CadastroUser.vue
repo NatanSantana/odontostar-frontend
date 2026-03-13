@@ -307,7 +307,7 @@ export default {
   methods: {
     async enviar() {
       try {
-      const response = await fetch('http://localhost:3080/api/register-user', {
+      const response = await fetch('https://odontostar-backend.onrender.com/api/register-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

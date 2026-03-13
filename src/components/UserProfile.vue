@@ -145,7 +145,7 @@ const token = localStorage.getItem('token')
 
 async function consultas() {
   const decoded = jwtDecode(token)
-  const response = await fetch(`http://localhost:3080/api/buscar-consultasbycpf?cpf=${decoded.cpf}`)
+  const response = await fetch(`https://odontostar-backend.onrender.com/api/buscar-consultasbycpf?cpf=${decoded.cpf}`)
   const data = await response.json();
   console.log(data)
   if (data.message === "Não há consultas") {
@@ -156,7 +156,7 @@ async function consultas() {
 }
 
 async function enviar() {
-  const response = await fetch(`http://localhost:3080/api/desmarcar-consulta?cpf=${cpfPaciente.value}&data=${diaConsulta.value}&hora=${hora.value}`,
+  const response = await fetch(`https://odontostar-backend.onrender.com/api/desmarcar-consulta?cpf=${cpfPaciente.value}&data=${diaConsulta.value}&hora=${hora.value}`,
     { method: 'DELETE' }
   );
 

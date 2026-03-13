@@ -324,7 +324,7 @@ const totalPaginas = computed(() => {
 });
 
 async function consultas() {
-  const response = await fetch('http://localhost:3080/api/buscar-consultaspendentes')
+  const response = await fetch('https://odontostar-backend.onrender.com/api/buscar-consultaspendentes')
   const data = await response.json();
   if (data.error === "Não há consultas") {
     existeConsultas.value = true;
@@ -335,7 +335,7 @@ async function consultas() {
 
 async function enviar() {
   if (operacaoEscolhida.value === "Marcar como Realizada") {
-    const response = await fetch('http://localhost:3080/api/marcar-realizada', {
+    const response = await fetch('https://odontostar-backend.onrender.com/api/marcar-realizada', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

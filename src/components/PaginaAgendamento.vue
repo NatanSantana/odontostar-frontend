@@ -433,7 +433,7 @@ async function enviar() {
         return
     }
 
-    const response = await fetch('http://localhost:3080/api/registrar-consulta', {
+    const response = await fetch('https://odontostar-backend.onrender.com/api/registrar-consulta', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -464,7 +464,7 @@ async function enviar() {
 watch(dataEscolhida, async (tempoDaData) => {
     if (dataEscolhida.value !== '') {
         const dataFormatada = format(new Date(tempoDaData), 'yyyy-MM-dd');
-    const response = await fetch(`http://localhost:3080/api/previsao-clima?dataDesejada=${dataFormatada}`)
+    const response = await fetch(`https://odontostar-backend.onrender.com/api/previsao-clima?dataDesejada=${dataFormatada}`)
 
     if (response.ok) {
         const data = await response.json();
@@ -484,7 +484,7 @@ watch(dataEscolhida, async (tempoDaData) => {
 
 watch(cpfInserir, async (cpfDigitado) => {
     if (cpfInserir.value.length === 11 && !isNaN(cpfInserir.value)) {
-        const response = await fetch(`http://localhost:3080/api/findBy?cpf=${cpfDigitado}`)
+        const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpfDigitado}`)
         
         if (response.ok) {
             const data = await response.json();
@@ -515,7 +515,7 @@ watch(cpfInserir, async (cpfDigitado) => {
 }) 
 
 watch(especialidade, async (especialidadeDesejada) => {
-  const response = await fetch(`http://localhost:3080/api/mostrar-datas?especialidade=${especialidadeDesejada}`)
+  const response = await fetch(`https://odontostar-backend.onrender.com/api/mostrar-datas?especialidade=${especialidadeDesejada}`)
     const data = await response.json()
     console.log(data)
   hora.value = [];

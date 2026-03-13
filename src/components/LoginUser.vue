@@ -158,7 +158,7 @@ watch(email, (novoEmail) => {
 })
 
 async function login() {
-  const response = await fetch("http://localhost:3080/api/login-user", {
+  const response = await fetch("https://odontostar-backend.onrender.com/api/login-user", {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email.value, senha: password.value })
