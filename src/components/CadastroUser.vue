@@ -8,30 +8,31 @@
         
       
         <label for="CPF"></label>
-        <input v-model="cpf" type="text" id="CPF" name="cpf" placeholder="cpf">
-        <span style="color: red; font-size: 12px; margin-right: 55px;" v-if="cpf && isNaN(cpf)">O CPF deve conter apenas números.</span>
+        <input v-model="cpf" type="text" id="CPF" placeholder="cpf">
+        <span class="spanErro" v-if="cpf && isNaN(cpf)">O CPF deve conter apenas números.</span>
+
 
         <label for="DATA DE NASCIMENTO"></label>
         <input v-model="dataNascimento" type="text" id="DATA DE NASCIMENTO" name="data-de-nascimento" placeholder="data de nascimento">
 
         <label for="TELEFONE"></label>
-        <input v-model="telefone" type="text" id="TELEFONE" name="telefone" placeholder="telefone">
-        <span style="color: red; font-size: 12px; margin-right: 55px;" v-if="telefone && isNaN(telefone)">O telefone deve conter apenas números.</span>
+        <input v-model="telefone" type="text" id="TELEFONE" placeholder="telefone">
+        <span class="spanErro" v-if="telefone && isNaN(telefone)">O telefone deve conter apenas números.</span>
 
-        <label for="EMAIL"></label>
-        <input v-model="email" type="text" id="EMAIL" name="email" placeholder="email">
-        <span style="color: red; font-size: 12px; margin-right: 55px;" v-if="emailCorreto === false">O email deve ser válido.</span>
+
+        <input v-model="email" type="text" id="EMAIL" placeholder="email">
+        <span class="spanErro" v-if="emailCorreto === false">O email deve ser válido.</span>
 
 
         <label for="SENHA"></label>
         <input v-model="senha" type="text" id="SENHA" name="senha" placeholder="senha">
         
-        <label for="CEP (apenas números)"></label>
-        <input v-model="cep" type="text" id="CEP" name="cep" placeholder="cep">
-        <span style="color: red; font-size: 12px; margin-right: 55px;" v-if="cep && isNaN(cep)">O CEP deve conter apenas números.</span>
+        <input v-model="cep" type="text" id="CEP" placeholder="cep">
+        <span class="spanErro" v-if="cep && isNaN(cep)">O CEP deve conter apenas números.</span>
 
         <label for="NUMERO"></label>
         <input v-model="numero" type="text" id="NUMERO" name="numero" placeholder="numero">
+        <span class="spanErro" v-if="numero && isNaN(numero)">Não pode haver letras no número.</span>
 
         <label for="BAIRRO"></label>
         <input v-model="bairro" type="text" id="BAIRRO" name="bairro" placeholder="bairro">
@@ -87,7 +88,8 @@ body {
 
 .confirmacao {
   margin-left: 399px;
-  margin-top: -450px;
+  margin-top: -30%;
+  padding: 50px;
   width: 400px;
   font-size: 22px;
   color: white;
@@ -97,8 +99,8 @@ body {
 
 .confirmacao p {
   width: 250px;
-  margin-left: 75px;
-  margin-top: -25px;
+  margin-left: 8%;
+  margin-top: 10px
 }
 
 .fade-enter-active,
@@ -128,6 +130,13 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px;
+}
+
+.spanErro {
+  color: red;
+  margin-right: 85%;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .form button {
@@ -219,7 +228,12 @@ body {
     font-size: 16px;
     margin-left: 0;
   }
-
+  .spanErro {
+    color: red;
+    margin-right: 85%;
+    font-size: 14px;
+    width: 150px;
+  }
   #camposNull {
     font-size: 16px;
     margin-left: 0;
@@ -229,13 +243,14 @@ body {
   .confirmacao {
     margin-left: 0;
     margin-top: 20px;
-    width: 100%;
+    width: 90%;
     font-size: 16px;
   }
 
   .confirmacao p {
-    margin-left: 10px;
-    width: 100%;
+    width: 140px;
+    margin-left: 16px;
+    
   }
 }
 </style>
@@ -251,7 +266,7 @@ export default {
   name: 'CadastroUser',
   data () {
     return {
-      criado: false,
+      criado: true,
       verificacao: false,
       emailCorreto: true,
       camposMessage: '',
