@@ -266,7 +266,7 @@ export default {
   name: 'CadastroUser',
   data () {
     return {
-      criado: true,
+      criado: false,
       verificacao: false,
       emailCorreto: true,
       camposMessage: '',
