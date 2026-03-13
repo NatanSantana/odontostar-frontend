@@ -163,14 +163,15 @@ async function login() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email.value, senha: password.value })
   })
+    const data = await response.json()
 
   if (!response.ok) {
     spanAcesso.value = false
-    console.error("Acesso Negado")
+    console.error(data.message)
     return
   }
 
-  const data = await response.json()
+  
   localStorage.setItem('token', data.token)
   const token = localStorage.getItem('token')
   const decoded = jwtDecode(token);

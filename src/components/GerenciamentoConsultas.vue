@@ -40,7 +40,6 @@
     <form>
     <select v-model="operacaoEscolhida">
       <option value="Marcar como Realizada">Marcar como Realizada</option>
-      <option value="Cancelar Consulta">Cancelar Consulta</option>
     </select>
       <input v-model="cpfPaciente" placeholder="CPF">
       <input v-model="diaConsulta" placeholder="DATA">
