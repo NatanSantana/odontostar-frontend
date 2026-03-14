@@ -259,11 +259,13 @@ body {
 
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
 
 export default {
   name: 'CadastroUser',
+  setup() {
+    const router = useRouter()
+    return { router }
+  },
   data () {
     return {
       criado: false,
@@ -338,7 +340,7 @@ export default {
       }
 
       this.criado = true;
-      router.push('/')
+      this.router.push('/agendamento')
 
     } catch (error) {
       console.error('Erro ao enviar os dados:', error);
