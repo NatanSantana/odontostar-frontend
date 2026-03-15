@@ -17,7 +17,7 @@
       <div class="heroTexto">
         <h2>Seu sorriso merece o melhor</h2>
         <p>Na OdontoStar, acreditamos que um sorriso saudável transforma vidas. Com uma equipe de profissionais altamente qualificados e tecnologia de ponta, oferecemos atendimento completo em odontologia, do tratamento preventivo às intervenções mais complexas.</p>
-        <button @click="$router.push('/cadastro')" class="btnAgendar">Agende sua Consulta</button>
+        <button @click="isUserAuth()" class="btnAgendar">Agende sua Consulta</button>
       </div>
     </section>
 
@@ -57,6 +57,9 @@
 <script setup>
 import { ref} from 'vue';
 import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const token = localStorage.getItem('token');
 const role = ref('')
@@ -69,6 +72,16 @@ if (token) {
 function logout() {
   localStorage.clear();
   window.location.reload();
+}
+
+function isUserAuth() {
+  if (role.value) {
+    router.push("/agendamento")
+    return true
+  } else {
+    router.push("/cadastro")
+    return false
+  }
 }
 
 </script>

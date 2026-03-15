@@ -401,6 +401,7 @@ import { format } from 'date-fns'
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
 const userNull = ref(false);
 const consultaAgendada = ref(false);    
 const enviarNegado = ref(false);
@@ -446,17 +447,19 @@ async function enviar() {
             realizada: false
         }) 
     })
+    const data = await response.json();
     
     if (response.ok) {
-        const data = await response.json();
-        console.log("Registrado com sucesso")
-        resultadoMarcarConsulta.value = data.message;
+    
         console.log(data.message)
         consultaAgendada.value = true;
         enviarNegado.value = false;
-        router.push('/perfil')
+        router.push("/perfil")
         return;
+    } else {
+        resultadoMarcarConsulta.value = data.error;
     }
+
 
 }
 
