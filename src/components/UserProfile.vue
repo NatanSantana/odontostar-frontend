@@ -9,6 +9,7 @@
         <th>Procedimento</th>
         <th>Data</th>
         <th>Hora</th>
+        <th>Dentista</th>
       </tr>
     </thead>
    <tbody>
@@ -17,6 +18,7 @@
     <td v-if="consulta.data">{{ format(parseISO(consulta.data), 'dd/MM/yyyy') }}</td>
     <td v-else>-</td>
     <td>{{ consulta.hora }}</td>
+    <td>{{ consulta.nomeDentista }}</td>
   </tr>
 </tbody>
   </table>

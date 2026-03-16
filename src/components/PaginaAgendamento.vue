@@ -11,15 +11,7 @@
         <p>Email: {{ email }}</p>
         <p>Bairro: {{bairro}}</p>
         <p>Cidade: {{ cidade }}</p>
-    </div>
-
-    <div class="inputPaciente">
-        <label style="color: white; font-weight: bold;">*Apenas Números*</label>
-        <input v-model="cpfInserir" type="text" placeholder="Digite seu CPF para Carregar seus Dados" id="inputCPF"> 
-        <br><br>
-        <span v-if="userNull === true" style="color: red; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-weight: bold;">Não foi possível encontrar o usuário, verifique o CPF</span>
-    </div>
-        
+    </div>    
 
     <div class="weather">
         <h2>Previsão do Tempo para o Dia da Consulta</h2>
@@ -44,7 +36,7 @@
 
         <label v-if="semDataHora === false" id="labeldata">Escolha uma Data:</label>
         <select v-if="semDataHora === false" v-model="dataEscolhida" name="datas" id="datasDisponiveis">
-            <option v-for="item in datas" :key="item._id" :value="item.data">{{ format(new Date(item.data), "dd/MM/yyyy") }}</option>   
+            <option v-for="d in diasUnicos" :key="d" :value="d">{{ format(new Date(d), "dd/MM/yyyy") }}</option>   
         </select>
         
         <label v-if="semDataHora === false" >Selecione um horário:</label>
@@ -53,10 +45,10 @@
         </select>
 
 
-        <span id="enviarNull" v-if="enviarNegado === true" style="color: red;">Todos os campos devem ser preenchidos para agendar uma consulta</span>
+        
         
         <button v-if="semDataHora === false" type="submit" id="buttonAgendar" @click="enviar()">Agendar Consulta</button>
-        <span v-if="consultaAgendada === true && enviarNegado === false" style="color: white; margin-right: 10%; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-size: 18px; font-weight: bold;">{{ resultadoMarcarConsulta }}</span>
+        <span v-if="consultaAgendada === true || enviarNegado === true" style="color: white; margin-right: 10%; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-size: 18px; font-weight: bold;">{{ resultadoMarcarConsulta }}</span>
     </div>
     
     
@@ -87,8 +79,8 @@
     flex-direction: column;
     width: 400px;
     height: 200px;
-    margin-left: 40%;
-    margin-top: -20%;
+    margin-left: 39%;
+    margin-top: -14%;
     color: white;
     position: absolute;
     gap: 10px;
@@ -141,7 +133,7 @@
 .formDetalhes {
     display: flex;
     flex-direction: column;
-    margin-top: -24%;
+    margin-top: -16%;
     margin-left: 65%;
     gap: 23px;
     width: 340px;
@@ -312,7 +304,7 @@
 
     .DetalhesPaciente {
         width: 80%;
-        margin-left: 4%;
+        margin-left: 8%;
         padding: 12px;
         font-size: 12px;
     }
@@ -348,7 +340,7 @@
 
     .weather {
         width: 90%;
-        margin-top: -5%;
+        margin-top: 30px;
         margin-left: 2.5%;
     }
 
@@ -396,11 +388,14 @@
 </style>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { format } from 'date-fns'
 import { useRouter } from 'vue-router';
+import { jwtDecode } from 'jwt-decode';
 
 const router = useRouter();
+const token = localStorage.getItem('token')
+
 
 const userNull = ref(false);
 const consultaAgendada = ref(false);    
@@ -410,7 +405,6 @@ const especialidade = ref('');
 const datas = ref('');
 const hora = ref(['']);
 const dataEscolhida = ref('');
-const cpfInserir = ref('');
 const nome = ref('');
 const anos = ref('');
 const cpf = ref('');
@@ -423,6 +417,7 @@ const temperatura = ref('Sem Previsão');
 const descricaoTempo = ref('Sem Previsão');
 const dataConsulta = ref('Sem Previsão');
 const resultadoMarcarConsulta = ref('');
+const diasUnicos = ref([])
 
 
 
@@ -433,6 +428,7 @@ async function enviar() {
         enviarNegado.value = true;
         return
     }
+    
 
     const response = await fetch('https://odontostar-backend.onrender.com/api/registrar-consulta', {
         method: 'POST',
@@ -444,19 +440,22 @@ async function enviar() {
             procedimento: especialidade.value,
             data: dataEscolhida.value,
             hora: horaEscolhida.value,
-            realizada: false
+            realizada: false,
+            dentistaId: datas.value[0].dentista._id 
         }) 
     })
+
     const data = await response.json();
     
     if (response.ok) {
-    
+        resultadoMarcarConsulta.value = "Consulta Marcada com Dentista " + datas.value[0].nomeCompleto;
         console.log(data.message)
         consultaAgendada.value = true;
         enviarNegado.value = false;
         router.push("/perfil")
         return;
     } else {
+        enviarNegado.value = true;
         resultadoMarcarConsulta.value = data.error;
     }
 
@@ -485,9 +484,10 @@ watch(dataEscolhida, async (tempoDaData) => {
     
 })
 
-watch(cpfInserir, async (cpfDigitado) => {
-    if (cpfInserir.value.length === 11 && !isNaN(cpfInserir.value)) {
-        const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpfDigitado}`)
+onMounted(async () => {
+        const decoded = jwtDecode(token);
+        cpf.value = decoded.cpf
+        const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpf.value}`)
         
         if (response.ok) {
             const data = await response.json();
@@ -512,40 +512,42 @@ watch(cpfInserir, async (cpfDigitado) => {
             return;
         }
         
-    }
-
-
-}) 
+    
+})
 
 watch(especialidade, async (especialidadeDesejada) => {
   const response = await fetch(`https://odontostar-backend.onrender.com/api/mostrar-datas?especialidade=${especialidadeDesejada}`)
-    const data = await response.json()
-    console.log(data)
+  const data = await response.json()
   hora.value = [];
+  diasUnicos.value = [];
 
   if (!response.ok) {
     semDataHora.value = true
-    console.log(data.error)
-    consultaAgendada.value = false;
     return;
   }
 
+  datas.value = data.request 
+
+  for (const item of data.request) {
+  const dataFormatada = item.data.split('T')[0] 
+  if (!diasUnicos.value.includes(dataFormatada)) {
+    diasUnicos.value.push(dataFormatada)
+  }
+}
+
   dataEscolhida.value = ''
   semDataHora.value = false
-  datas.value = data.request
-
 })
 
 watch(dataEscolhida, (novaData) => {
-    
-    if (dataEscolhida.value !== '') {
-        hora.value = []
-        for (const item of datas.value) {
-    if (novaData === item.data) { 
-      hora.value.push(item.horario)
+  if (novaData !== '') {
+    hora.value = []
+    for (const item of datas.value) {
+      if (item.data.split('T')[0] === novaData) {
+        hora.value.push(item.horario)
+      }
     }
   }
-    } 
 })
 
 </script>
