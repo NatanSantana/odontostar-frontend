@@ -154,6 +154,7 @@ async function consultas() {
     existeConsultas.value = true;
     return
   }
+  console.log(data)
   consultasPendentes.value = data
 }
 
