@@ -15,7 +15,7 @@ const routes = [
   { path: '/gerenciamento', component: GerenciamentoConsultas, meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/agendamento', component: PaginaAgendamento, meta: { requiresAuth: true} },
   {path: '/perfil', component: UserProfile, meta: {requiresAuth: true}},
-  {path: '/lancar-datas', component: LancarDatas, meta: {requiresAuth: false}}
+  { path: '/lancar-datas', component: LancarDatas, meta: { requiresAuth: true, requiresDentista: true } }
 ]
 
 const router = createRouter({
@@ -43,6 +43,18 @@ router.beforeEach((to, from, next) => {
       return;
     }
   }
+
+  if (to.meta.requiresDentista) {
+  if (!token) {
+    next('/');
+    return;
+  }
+  const decoded = jwtDecode(token);
+  if (decoded.role !== 'Dentista') {
+    next('/');
+    return;
+  }
+}
 
   next();
 });

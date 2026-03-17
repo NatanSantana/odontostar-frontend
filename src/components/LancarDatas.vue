@@ -2,10 +2,10 @@
     <h1 id="titulo">Lançar Datas</h1>
 
     <div class="container">
-        <form>
+        <form @submit.prevent="enviar()">
             <input type="date" :min="hoje" :max="daquiDoisAnos" id="data" v-model="dia">
             <input type="time" min="08:00" max="17:00" id="time" v-model="hora">
-            <button type="submit" id="submit" @submit="enviar()">Confirmar</button>
+            <button type="submit" id="submit">Confirmar</button>
             <span>{{ mensagemResultado }}</span>
 
         </form>
@@ -130,11 +130,12 @@ onMounted(async ()  =>  {
     const decoded = jwtDecode(token)
     cpfDentista.value = decoded.cpf
 
-    const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?id=${cpfDentista.value}`)
+    const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpfDentista.value}`)
 
     const data = await response.json();
+    
 
-    if (!data.ok) {
+    if (!response.ok) {
         console.log(data.message)
         return
     } else {
