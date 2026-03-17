@@ -6,6 +6,7 @@ import PaginaAgendamento from '../components/PaginaAgendamento.vue'
 import GerenciamentoConsultas from '@/components/GerenciamentoConsultas.vue'
 import UserProfile from '@/components/UserProfile.vue'
 import { jwtDecode } from 'jwt-decode';
+import LancarDatas from '@/components/LancarDatas.vue'
 
 const routes = [
   { path: '/', component: PaginaMain },
@@ -13,7 +14,8 @@ const routes = [
   { path: '/cadastro', component: CadastroUser },
   { path: '/gerenciamento', component: GerenciamentoConsultas, meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/agendamento', component: PaginaAgendamento, meta: { requiresAuth: true} },
-  {path: '/perfil', component: UserProfile, meta: {requiresAuth: true}}
+  {path: '/perfil', component: UserProfile, meta: {requiresAuth: true}},
+  {path: '/lancar-datas', component: LancarDatas, meta: {requiresAuth: false}}
 ]
 
 const router = createRouter({

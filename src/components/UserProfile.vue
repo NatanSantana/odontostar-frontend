@@ -1,6 +1,13 @@
 <template>
 <h1 id="titulo">Veja As Consultas Marcadas</h1>
 
+<div class="botoes">
+
+  <button @click="$router.push('/')" id="menu" >Menu</button>
+
+
+</div>
+
 <div class="ConsultasMarcadas">
       <span v-if="existeConsultas" style="color: whitesmoke; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-weight: bold; ">Não há consultas</span>
     <table>
@@ -36,7 +43,7 @@
       <input v-model="diaConsulta" placeholder="DATA">
       <input v-model="hora" placeholder="HORA">
 
-      <button type="button" @click="verificar()">Confirmar</button>
+      <button type="button" @click="verificar()" id="btn">Confirmar</button>
       <span style="color: red; font-size: 20px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-weight: bold;">{{ mensagemAoEnviar }}</span>
     </form>
       
@@ -47,6 +54,33 @@
 </template>
 
 <style>
+
+.botoes {
+  margin-left: 94%;
+  margin-top: -90px;
+  z-index: 2;
+  position: absolute;
+}
+
+.botoes #menu {
+  height: 40px;
+  width: 80px;
+  background-color: transparent;
+  color: whitesmoke;
+  border-radius: 5px;
+  border: 2px solid white;
+  font-weight: bold;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.botoes #menu:hover {
+  background: white;
+  color: rgb(0, 6, 85);
+  
+}
+
+
 
 
 @media (max-width: 768px) {
@@ -98,6 +132,19 @@
 }
 
 @media (max-width: 480px) {
+
+  .botoes {
+    margin-top: -120px;
+    margin-left: 85%;
+  }
+
+  .botoes #menu {
+    width: 45px;
+    padding: 5px;
+    height: 27px;
+    font-size: 11px;
+  }
+  
   #titulo {
     font-size: 17px;
     letter-spacing: 2px;
@@ -134,6 +181,9 @@
 import { ref, onMounted } from 'vue';
 import { jwtDecode } from 'jwt-decode';
 import { format, parseISO} from 'date-fns';
+
+
+
 
 const operacaoEscolhida = ref('');
 const mensagemAoEnviar = ref('')

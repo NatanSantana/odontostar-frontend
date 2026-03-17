@@ -4,9 +4,10 @@
     <header class="header">
       <h1 class="headerTitulo">⭐ OdontoStar</h1>
       <div class="headerBotoes">
-        <button @click="$router.push('/login')" class="btnLogin">Login</button>
-        <button @click="$router.push('/cadastro')" class="btnCadastro">Cadastro</button>
+    
         <button  v-if="role === 'admin'" @click="$router.push('/gerenciamento')" class="btnGerenciamento">Gerenciamento</button>
+        <button @click="$router.push('/cadastro')" class="btnCadastro">Cadastro</button>
+        <button @click="$router.push('/login')" class="btnLogin">Login</button>
         <button  v-if="token"  @click="$router.push('/perfil')" class="btnPerfil">Perfil</button>
         <button v-if="token !== null" @click="logout" id="btnLogout">⏻ Sair</button>
         
