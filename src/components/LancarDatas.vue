@@ -6,7 +6,7 @@
             <input type="date" :min="hoje" :max="daquiDoisAnos" id="data" v-model="dia">
             <input type="time" min="08:00" max="17:00" id="time" v-model="hora">
             <button type="submit" id="submit">Confirmar</button>
-            <span>{{ mensagemResultado }}</span>
+            <span id="resultado">{{ mensagemResultado }}</span>
 
         </form>
     </div>
@@ -16,6 +16,13 @@
 </template>
 
 <style>
+
+#resultado {
+    color: whitesmoke;
+    box-shadow: 4px 10px 10px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
 
 #submit {
     width: 80px;
@@ -98,11 +105,18 @@ const hora = ref('')
 const cpfDentista = ref('')
 const idDentista = ref('')
 const consultorio = ref('')
+const token = localStorage.getItem('token')
 
 async function enviar() {
+    if (dia.value === '' || hora.value === '') {
+        mensagemResultado.value = "Todos os campos devem ser preenchidos"
+        return
+    }
     const response = await fetch("https://odontostar-backend.onrender.com/api/lancar-datas", {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
             data: dia.value,
             dentista: idDentista.value,
@@ -130,19 +144,27 @@ onMounted(async ()  =>  {
     const decoded = jwtDecode(token)
     cpfDentista.value = decoded.cpf
 
-    const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpfDentista.value}`)
+    const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpfDentista.value}`, {
+        headers: {'Authorization': `Bearer ${token}`}
+    })
 
     const data = await response.json();
+    
     
 
     if (!response.ok) {
         console.log(data.message)
         return
     } else {
-        const responseDentista = await fetch(`https://odontostar-backend.onrender.com/api/dentistabycpf?cpf=${cpfDentista.value}`)
+        const responseDentista = await fetch(`https://odontostar-backend.onrender.com/api/dentistabycpf?cpf=${cpfDentista.value}`, {
+            headers: {'Authorization': `Bearer ${token}`}
+        })
+        
 
         const dataDentista = await responseDentista.json();
-        idDentista.value = dataDentista._id
+        
+
+        idDentista.value = dataDentista.request._id
         consultorio.value = dataDentista.consultorio
         return 
     }

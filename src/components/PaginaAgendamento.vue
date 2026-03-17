@@ -432,7 +432,10 @@ async function enviar() {
 
     const response = await fetch('https://odontostar-backend.onrender.com/api/registrar-consulta', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
             nomePaciente: nome.value,
             cpf: cpf.value,
@@ -487,7 +490,9 @@ watch(dataEscolhida, async (tempoDaData) => {
 onMounted(async () => {
         const decoded = jwtDecode(token);
         cpf.value = decoded.cpf
-        const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpf.value}`)
+        const response = await fetch(`https://odontostar-backend.onrender.com/api/findBy?cpf=${cpf.value}`, {
+            headers: {'Authorization': `Bearer ${token}`}
+        })
         
         if (response.ok) {
             const data = await response.json();
@@ -516,7 +521,9 @@ onMounted(async () => {
 })
 
 watch(especialidade, async (especialidadeDesejada) => {
-  const response = await fetch(`https://odontostar-backend.onrender.com/api/mostrar-datas?especialidade=${especialidadeDesejada}`)
+  const response = await fetch(`https://odontostar-backend.onrender.com/api/mostrar-datas?especialidade=${especialidadeDesejada}`, {
+    headers: {'Authorization': `Bearer ${token}`}
+  })
   const data = await response.json()
   hora.value = [];
   diasUnicos.value = [];

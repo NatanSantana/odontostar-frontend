@@ -3,19 +3,19 @@
 
     <div class="form">
       <form class="inputs" @submit.prevent="verificar">
-        <label for="NOME COMPLETO"></label>
+        
         <input v-model="nomeCompleto" type="text" id="NOME COMPLETO" name="nome-completo" placeholder="nome completo">
         
       
-        <label for="CPF"></label>
+        
         <input v-model="cpf" type="text" id="CPF" placeholder="cpf">
         <span class="spanErro" v-if="cpf && isNaN(cpf)">O CPF deve conter apenas números.</span>
 
 
-        <label for="DATA DE NASCIMENTO"></label>
+        
         <input v-model="dataNascimento" type="text" id="DATA DE NASCIMENTO" name="data-de-nascimento" placeholder="data de nascimento">
 
-        <label for="TELEFONE"></label>
+        
         <input v-model="telefone" type="text" id="TELEFONE" placeholder="telefone">
         <span class="spanErro" v-if="telefone && isNaN(telefone)">O telefone deve conter apenas números.</span>
 
@@ -24,21 +24,23 @@
         <span class="spanErro" v-if="emailCorreto === false">O email deve ser válido.</span>
 
 
-        <label for="SENHA"></label>
+        
         <input v-model="senha" type="text" id="SENHA" name="senha" placeholder="senha">
         
         <input v-model="cep" type="text" id="CEP" placeholder="cep">
         <span class="spanErro" v-if="cep && isNaN(cep)">O CEP deve conter apenas números.</span>
 
-        <label for="NUMERO"></label>
+        
         <input v-model="numero" type="text" id="NUMERO" name="numero" placeholder="numero">
         <span class="spanErro" v-if="numero && isNaN(numero)">Não pode haver letras no número.</span>
 
-        <label for="BAIRRO"></label>
+        
         <input v-model="bairro" type="text" id="BAIRRO" name="bairro" placeholder="bairro">
 
-        <label for="LOGRADOURO"></label>
+        
         <input v-model="logradouro" type="text" id="LOGRADOURO" name="logradouro" placeholder="logradouro">
+
+        <input v-if="adminAuth === true" v-model="roleEscolhida" type="text" id="roleInput" placeholder="role">
         
         <button type="submit">Enviar</button>
 
@@ -48,13 +50,12 @@
         </div>
         </transition>
 
-      <transition name="fade">
-      <div class="confirmacao" v-if="criado === true">
-        <h2>Confirmação de Cadastro</h2>
-        <p>Seu cadastro foi realizado com sucesso!</p>
-      </div>
-    </transition>
-
+          <transition name="fade">
+          <div class="confirmacao" v-if="criado === true">
+            <h2>Confirmação de Cadastro</h2>
+            <p>Seu cadastro foi realizado com sucesso!</p>
+        </div>
+        </transition>
       </form>
     </div>
 
@@ -257,6 +258,7 @@ body {
 
 <script>
 
+import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'vue-router'
 
 
@@ -282,7 +284,9 @@ export default {
       cep: '',
       bairro: '',
       cidade: '',
-      logradouro: ''
+      logradouro: '',
+      role: 'user',
+      adminAuth: false
 
     }
   },
@@ -306,7 +310,19 @@ export default {
   }
 },
 
+mounted() {
+      const token = localStorage.getItem('token');
+      if (token){
+        const decoded = jwtDecode(token)
+        if (decoded.role === 'admin') {
+          this.adminAuth = true;
+        }
+
+      }
+    },
+
   methods: {
+    
     async enviar() {
       try {
       const response = await fetch('https://odontostar-backend.onrender.com/api/register-user', {
@@ -326,7 +342,7 @@ export default {
               cidade: this.cidade,
               bairro: this.bairro,
               logradouro: this.logradouro,
-              role: 'user'
+              role: this.role
       })
 
       });
