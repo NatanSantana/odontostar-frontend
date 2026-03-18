@@ -1,6 +1,13 @@
 <template>
     <h1 id="titulo">Lançar Datas</h1>
 
+    <div class="botoes">
+
+  <button @click="$router.push('/')" id="menu" >Menu</button>
+
+
+</div>
+
     <div class="container">
         <form @submit.prevent="enviar()">
             <input type="date" :min="hoje" :max="daquiDoisAnos" id="data" v-model="dia">
@@ -42,10 +49,6 @@
     color: rgb(0, 6, 85);
 }
 
-#titulo {
-    margin-left: 30%;
-}
-
 .container form {
     display: flex;
     flex-direction: column;
@@ -81,8 +84,9 @@
     background-color: black;
     margin-left: 30%;
     margin-top: 3%;
-    background: linear-gradient(150deg, rgb(0, 6, 85), rgba(0, 0, 0, 0.466));
+    background: linear-gradient(150deg, rgb(2, 14, 180), rgba(0, 0, 0, 0.466));
     box-shadow: 4px 10px 10px rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,5 +1,12 @@
 <template>
     <h1 id="titulo">Agende sua Consulta Odontológica</h1>
+
+    <div class="botoes">
+
+  <button @click="$router.push('/')" id="menu" >Menu</button>
+
+
+</div>
     
 
     <div class="DetalhesPaciente">

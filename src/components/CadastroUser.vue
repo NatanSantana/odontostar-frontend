@@ -1,6 +1,13 @@
 <template>
     <h1 id="TituloCadastro">CADASTRO</h1>
 
+    <div class="botoes">
+
+  <button @click="$router.push('/')" id="menu" >Menu</button>
+
+
+</div>
+
     <div class="form">
       <form class="inputs" @submit.prevent="verificar">
         
@@ -13,7 +20,7 @@
 
 
         
-        <input v-model="dataNascimento" type="text" id="DATA DE NASCIMENTO" name="data-de-nascimento" placeholder="data de nascimento">
+        <input v-model="dataNascimento" type="date" min="1926/01/01" id="DATA DE NASCIMENTO" name="data-de-nascimento" placeholder="data de nascimento">
 
         
         <input v-model="telefone" type="text" id="TELEFONE" placeholder="telefone">
@@ -260,6 +267,7 @@ body {
 
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'vue-router'
+
 
 
 export default {

@@ -1,6 +1,13 @@
 <template>
     <h1 id="TituloLogin">LOGIN</h1>
 
+    <div class="botoes">
+
+  <button @click="$router.push('/')" id="menu" >Menu</button>
+
+
+</div>
+
 
     <form class="login"  @submit.prevent="login">
 
@@ -178,8 +185,10 @@ async function login() {
   
   if (decoded.role !== 'admin') {
     router.push('/agendamento')
-  } else if (decoded.role === 'admin') {
+  } if (decoded.role === 'admin') {
     router.push('/gerenciamento')
+  } if (decoded.role === 'Dentista') {
+    router.push('/lancar-datas')
   }
   
 }

@@ -1,6 +1,13 @@
 <template>
 <h1 id="titulo">Controle de Consultas</h1>
 
+<div class="botoes">
+
+  <button @click="$router.push('/')" id="menu" >Menu</button>
+
+
+</div>
+
     <div class="ConsultasMarcadas">
       <span v-if="existeConsultas" style="color: whitesmoke; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); font-weight: bold; ">Não há consultas</span>
     <table>
@@ -313,6 +320,7 @@ const mensagemAoEnviar = ref('')
 const existeConsultas = ref(false)
 const paginaAtual = ref(1);
 const itensPorPagina = 5;
+const token = localStorage.getItem('token')
 
 const consultasPaginadas = computed(() => {
   const inicio = (paginaAtual.value - 1) * itensPorPagina;
@@ -325,7 +333,9 @@ const totalPaginas = computed(() => {
 });
 
 async function consultas() {
-  const response = await fetch('https://odontostar-backend.onrender.com/api/buscar-consultaspendentes')
+  const response = await fetch('https://odontostar-backend.onrender.com/api/buscar-consultaspendentes', {
+    headers: {'Authorization': `Bearer ${token}`}
+  })
   const data = await response.json();
   if (data.error === "Não há consultas") {
     existeConsultas.value = true;
@@ -338,7 +348,10 @@ async function enviar() {
   if (operacaoEscolhida.value === "Marcar como Realizada") {
     const response = await fetch('https://odontostar-backend.onrender.com/api/marcar-realizada', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify({
         cpfPaciente: cpfPaciente.value,
         diaConsulta: diaConsulta.value,
