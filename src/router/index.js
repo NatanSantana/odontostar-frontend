@@ -7,6 +7,7 @@ import GerenciamentoConsultas from '@/components/GerenciamentoConsultas.vue'
 import UserProfile from '@/components/UserProfile.vue'
 import { jwtDecode } from 'jwt-decode';
 import LancarDatas from '@/components/LancarDatas.vue'
+import CadastroDentista from '@/components/CadastroDentista.vue'
 
 const routes = [
   { path: '/', component: PaginaMain },
@@ -15,7 +16,8 @@ const routes = [
   { path: '/gerenciamento', component: GerenciamentoConsultas, meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/agendamento', component: PaginaAgendamento, meta: { requiresAuth: true} },
   {path: '/perfil', component: UserProfile, meta: {requiresAuth: true}},
-  { path: '/lancar-datas', component: LancarDatas, meta: { requiresAuth: true, requiresDentista: true } }
+  { path: '/lancar-datas', component: LancarDatas, meta: { requiresAuth: true, requiresDentista: true } },
+  {path: '/cadastro-dentista', component: CadastroDentista, meta: {requiresAdmin: true}}
 ]
 
 const router = createRouter({
