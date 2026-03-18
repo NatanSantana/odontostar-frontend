@@ -197,7 +197,7 @@ async function enviar() {
 
 
     if (!response.ok) {
-        console.log(data.message)
+        mensagemResultado.value = (data.message)
     } else {
         mensagemResultado.value = ("Dentista Registrado")
     }
