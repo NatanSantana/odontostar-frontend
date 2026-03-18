@@ -6,9 +6,14 @@
       <div class="headerBotoes">
     
         <button  v-if="role === 'admin'" @click="$router.push('/gerenciamento')" class="btnGerenciamento">Gerenciamento</button>
+        <button  v-if="role === 'Dentista'" @click="$router.push('/lancar-datas')" class="btnGerenciamento">Lançar Datas</button>
         <button @click="$router.push('/cadastro')" class="btnCadastro">Cadastro</button>
-        <button @click="$router.push('/login')" class="btnLogin">Login</button>
-        <button  v-if="token"  @click="$router.push('/perfil')" class="btnPerfil">Perfil</button>
+
+        <button v-if="role === 'admin'" @click="$router.push('/cadastro-dentista')" class="btnCadastro">Cadastrar Dentista</button>
+
+        <button v-if="token === null"  @click="$router.push('/login')" class="btnLogin">Login</button>
+
+        <button v-if="token"  @click="$router.push('/perfil')" class="btnPerfil">Perfil</button>
         <button v-if="token !== null" @click="logout" id="btnLogout">⏻ Sair</button>
         
       </div>
@@ -205,6 +210,10 @@ function isUserAuth() {
   color: white;
 }
 
+.btnGerenciamento:hover {
+  background: transparent;
+  color: white;
+}
 
 .hero {
   display: flex;
@@ -360,7 +369,7 @@ function isUserAuth() {
     font-size: 13px;
   }
   .btnCadastro {
-    padding: 8px 34px;
+    padding: 8px 20px;
     font-size: 13px;
   }
 
@@ -368,7 +377,7 @@ function isUserAuth() {
     padding: 8px 15px;
     font-size: 13px;
     margin-top: -40px;
-    margin-left: 84px;
+    margin-left: 130px;
     position: absolute;
   }
 
@@ -376,6 +385,7 @@ function isUserAuth() {
     padding: 8px 17px;
     font-size: 13px;
     margin-top: -40px;
+    margin-left: 15px;
     position: absolute;
   }
 }

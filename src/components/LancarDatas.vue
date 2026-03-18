@@ -30,7 +30,6 @@
     font-weight: bold;
 }
 
-
 #submit {
     width: 80px;
     height: 25px;
@@ -92,6 +91,83 @@
     justify-content: center;
 }
 
+@media (max-width: 1024px) {
+    .container {
+        width: 80%;
+        margin-left: 10%;
+        height: auto;
+        padding: 40px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 85%;
+        margin-left: 7.5%;
+        height: auto;
+        padding: 30px 0;
+    }
+
+    .container form {
+        margin-top: 0;
+        gap: 20px;
+    }
+
+    #data {
+        margin-top: 0;
+        width: 160px;
+        height: 50px;
+    }
+
+    #time {
+        width: 160px;
+        height: 50px;
+    }
+
+    #submit {
+        width: 100px;
+        height: 35px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        margin-left: 5%;
+        padding: 25px 0;
+        margin-top: 15%;
+    }
+
+    #data {
+        width: 140px;
+        height: 45px;
+        font-size: 14px;
+    }
+
+    #time {
+        width: 140px;
+        height: 45px;
+        font-size: 14px;
+    }
+
+    #submit {
+        width: 120px;
+        height: 40px;
+        font-size: 14px;
+        margin-right: 55px;
+    }
+
+    #resultado {
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .botoes {
+       margin-top: -90px;
+       margin-left: 84%;
+    }
+}
 
 </style>
 
