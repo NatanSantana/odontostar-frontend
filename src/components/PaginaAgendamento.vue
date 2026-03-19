@@ -543,7 +543,7 @@ watch(especialidade, async (especialidadeDesejada) => {
   datas.value = data.request 
 
   for (const item of data.request) {
-  const dataFormatada = item.data.split('T')[0] 
+      const dataFormatada = new Date(item.data).toLocaleDateString('pt-BR'); 
   if (!diasUnicos.value.includes(dataFormatada)) {
     diasUnicos.value.push(dataFormatada)
   }
