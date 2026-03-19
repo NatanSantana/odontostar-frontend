@@ -272,15 +272,18 @@ tr:hover {
   }
 
   .ConsultasMarcadas table {
-    font-size: 9px;
+    font-size: 5px;
+    
   }
 
   th, td {
-    padding: 6px;
+    padding: 2px;
+    font-size: 11px;
+    width: 20px;
   }
 
   .funcoes #consultaRealizada h2 {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .funcoes #consultaRealizada input {

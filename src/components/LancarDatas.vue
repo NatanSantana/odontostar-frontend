@@ -28,6 +28,8 @@
     color: whitesmoke;
     box-shadow: 4px 10px 10px rgba(0, 0, 0, 0.1);
     font-weight: bold;
+    margin-top: 12%;
+    position: absolute;
 }
 
 #submit {
@@ -41,6 +43,8 @@
     border-radius: 5px;
     transition: 0.3s;
     box-shadow: 4px 10px 10px rgba(0, 0, 0, 0.2);
+    
+    
 }
 
 #submit:hover {
@@ -161,6 +165,8 @@
     #resultado {
         font-size: 13px;
         text-align: center;
+        margin-top: 57%;
+        margin-right: 8px;
     }
 
     .botoes {
@@ -212,7 +218,7 @@ async function enviar() {
         mensagemResultado.value = data.message
         return 
     } else {
-        mensagemResultado.value = "data lançada com sucesso"
+        mensagemResultado.value = "data lançada com sucesso: consulta para o dia " + format(new Date(dia.value + 'T00:00:00'), 'dd/MM/yyyy') + " as " + hora.value
         return 
     }
 
