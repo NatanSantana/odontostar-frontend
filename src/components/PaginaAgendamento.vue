@@ -43,7 +43,9 @@
 
         <label v-if="semDataHora === false" id="labeldata">Escolha uma Data:</label>
         <select v-if="semDataHora === false" v-model="dataEscolhida" name="datas" id="datasDisponiveis">
-            <option v-for="d in diasUnicos" :key="d" :value="d">{{ format(new Date(d), "dd/MM/yyyy") }}</option>   
+            <option v-for="d in diasUnicos" :key="d" :value="d">
+                {{ d }}
+            </option>   
         </select>
         
         <label v-if="semDataHora === false" >Selecione um horário:</label>
@@ -396,7 +398,7 @@
 
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { useRouter } from 'vue-router';
 import { jwtDecode } from 'jwt-decode';
 
@@ -475,15 +477,17 @@ async function enviar() {
 
 watch(dataEscolhida, async (tempoDaData) => {
     if (dataEscolhida.value !== '') {
-        const dataFormatada = format(new Date(tempoDaData), 'yyyy-MM-dd');
+        
+        const dataParsed = parse(tempoDaData, 'dd/MM/yyyy', new Date());
+        const dataFormatada = format(dataParsed, 'yyyy-MM-dd');
     const response = await fetch(`https://odontostar-backend.onrender.com/api/previsao-clima?dataDesejada=${dataFormatada}`)
 
     if (response.ok) {
         const data = await response.json();
-        console.log(data)
         temperatura.value = data.temp + "°C";
         descricaoTempo.value = data.desc
-        dataConsulta.value = format(new Date(dataEscolhida.value), "dd/MM/yyyy")
+        dataConsulta.value = dataEscolhida.value
+        
     } else {
         dataConsulta.value = 'Sem Previsão'
         temperatura.value = 'Sem Previsão'
@@ -554,14 +558,15 @@ watch(especialidade, async (especialidadeDesejada) => {
 })
 
 watch(dataEscolhida, (novaData) => {
-  if (novaData !== '') {
-    hora.value = []
-    for (const item of datas.value) {
-      if (item.data.split('T')[0] === novaData) {
-        hora.value.push(item.horario)
-      }
+    if (novaData !== '') {
+        hora.value = []
+        for (const item of datas.value) {
+            const dataItem = new Date(item.data).toLocaleDateString('pt-BR');
+            if (dataItem === novaData) {
+                hora.value.push(item.horario)
+            }
+        }
     }
-  }
 })
 
 </script>
